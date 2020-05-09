@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>电子投票系统</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="background: #B0E0E6;margin-top: 100px;">
+<div class="container">
+	<div class="row ">
+		<div class="col-sm-12">
+			<!-- 上部导航条 -->
+			<ul class="nav nav-tabs">
+				<li class="nav-item active">
+					<a class="nav-link" data-toggle="tab" href="#conferenceRegistration" aria-expanded="true">会议注册</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " data-toggle="tab" href="#meetingProcess">会议流程</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " data-toggle="tab" href="#caseReport">情况汇报</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " data-toggle="tab" href="#votingMethod">投票办法</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link " data-toggle="tab" href="#votingBallot">表决票</a>
+				</li>
+<!--				<li class="nav-item">-->
+<!--					<a class="nav-link " data-toggle="tab" href="#publicity">公示</a>-->
+<!--				</li>-->
+				<li class="nav-item">
+					<a class="nav-link " data-toggle="tab" href="#meetionInfomation">会议资料</a>
+				</li>
+			</ul>
+
+			<!-- 下部内容区域 -->
+			<div id="myTabContent" class="tab-content"  style="margin-bottom: 50px;margin-top: 50px;">
+
+				<div class="tab-pane fade active in" id="conferenceRegistration" th:each="meeting :${meeting}">
+					<div class="form-group">
+						<label for="meetingCode">会议编号</label>
+						<input type="number" class="form-control" id="meetingCode" th:value="${meeting.code}" readonly="readonly">
+						<input type="hidden" th:value="${meeting.id}" id="hiddenMeetingId" />
+					</div>
+					<div class="form-group">
+						<label for="meetingName">会议名称</label>
+						<input type="text" class="form-control" id="meetingName" th:value="${meeting.name}" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label for="meetingTime">会议时间</label>
+						<input type="date" class="form-control" id="meetingTime" th:value="${meeting.time}" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label for="meetingAddress">会议地点</label>
+						<input type="text" class="form-control" id="meetingAddress" th:value="${meeting.address}" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label for="meetingOrganizer">组织单位</label>
+						<input type="text" class="form-control" id="meetingOrganizer" th:value="${meeting.organizer}" readonly="readonly">
+					</div>
+
+				</div>
+
+				<div class="tab-pane fade " id="meetingProcess">
+					<div class="form-group" th:each="info: ${infoList1}">
+						<label for="exampleTextarea">会议流程</label>
+						<textarea class="form-control" id="exampleTextarea" rows="10" readonly="readonly" th:text="${info.content}"></textarea>
+					</div>
+				</div>
+
+				<div class="tab-pane fade  " id="caseReport">
+					<p>情况汇报</p>
+					<fieldset>
+						<div class="controls" th:each="files1: ${filesList1}">
+							<a th:text="${files1.fileName}" th:href="'getFile?path='+${files1.filePath}+'&name='+${files1.fileName}"  target="_blank"></a>
+						</div>
+					</fieldset>
+				</div>
+
+				<div class="tab-pane fade  " id="votingMethod">
+					<p>投票办法</p>
+					<table class="table table-bordered table-hover">
+						<tbody>
+						<tr>
+							<th>目标投票数</th>
+							<td><input type="number" id="targetNum" class="form-control" th:value="${way1}" readonly="readonly"/></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="tab-pane fade  " id="votingBallot">
+					<p>表决票</p>
+					<table class="table table-hover">
+						<thead>
+							<th>选择</th>
+							<th scope="col">选项名</th>
+							<th scope="col">介绍</th>
+						</thead>
+						<tbody th:each="selector: ${selectorList}">
+						<tr class="table-active">
+							<td><input type="checkbox" class="form-check-input" th:id="${selectorStat.index+1}" th:name="${selector.id}" /></td>
+							<th scope="row"><input type="text" class="form-control" id="inputDefault" th:value="${selector.name}" readonly="readonly"></th>
+							<td><p class="form-control" rows="3" th:text="${selector.content}" readonly="readonly"></p></td>
+						</tr>
+						</tbody>
+					</table>
+					<button class="btn-large btn btn-info" onclick="selectorConfirm()" id="confirSelector">确认投票选择</button>
+				</div>
+
+<!--				<div class="tab-pane fade  " id="publicity">-->
+<!--					<p>公示</p>-->
+<!--					<fieldset>-->
+<!--						<div class="controls" th:each="info2: ${infoList2}">-->
+<!--							<h3 th:text="${info2.content}"></h3>-->
+<!--						</div>-->
+<!--					</fieldset>-->
+<!--				</div>-->
+
+				<div class="tab-pane fade " id="meetionInfomation">
+					<p>会议资料</p>
+					<div class="controls" th:each="files2: ${filesList2}">
+						<a th:text="${files2.fileName}" th:href="'getFile?path='+${files2.filePath}+'&name='+${files2.fileName}" target="_blank"></a>
+					</div>
+				</div>
+				<button class="btn btn-large btn-info" onclick="safeOut()">退出</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+	<!--	安全退出 -->
+	function safeOut() {
+		$.ajax({
+			type: 'POST',
+			url: './safeOut',
+			success: function (data) {
+				var json = JSON.parse(data);
+				if(json.result == "1"){
+					window.location.href=json.msg;
+				}else{
+					alert(json.msg);
+					return;
+				}
+			}
+		})
+	}
+
+	//确认参与人员的选择
+	function selectorConfirm() {
+		var size = $("input[type='checkbox']:checked").length;
+		var size2 = $("input[type='checkbox']").length;
+		if(size > $("#targetNum").val()){
+			alert("选择过多，只能选"+$("#targetNum").val()+"个！");
+			return;
+		}
+		var confir = confirm("确定选项吗？");
+		if (confir){
+			$("input[type='checkbox']:checked").each(function () {
+				var data = {"target": $(this).attr('name')};
+				$.ajax({
+					type: 'POST',
+					url: './toupiao',
+					data : data,
+					success: function () {
+						$("#confirSelector").attr("readonly", "readonly");
+					}
+				})
+			});
+		}
+	}
+
+</script>
+</html>

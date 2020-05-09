@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"> 
+	<title>电子投票系统</title>
+</head>
+<body>
+<div class="container">
+	<div class="row ">
+		<div class="col-sm-12">
+			<table class="table table-hover">
+			  <thead>
+			    <tr>
+			      <th scope="col">会议编号</th>
+			      <th scope="col">会议名称</th>
+			      <th scope="col">会议时间</th>
+			      <th scope="col">会议地点</th>
+				  <th scope="col">组织单位</th>
+				  <th scope="col">操作</th>
+			    </tr>
+			  </thead>
+				<tbody th:each="meeting: ${meetingList}">
+				<tr class="table-active">
+					<th scope="row" th:text="${meeting.code}"></th>
+					<td th:text="${meeting.name}"></td>
+					<td th:text="${meeting.time}"></td>
+					<td th:text="${meeting.address}"></td>
+					<td th:text="${meeting.organizer}"></td>
+					<td>
+						<button type="button" class="btn btn-danger" th:onclick="getAllMeetingInfo(id)" th:id="${meeting.code}">查看</button>
+						<button type="button" class="btn btn-danger" th:onclick="getResult(id)" th:id="${meeting.id}">下载结果</button>
+						<a id="temp" href="" target="_blank"></a>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+	function getAllMeetingInfo(id) {
+		let data = {"code": id};
+		$.ajax({
+			type: 'POST',
+			url: "./view",
+			data: data,
+			success: function (data) {
+				$("#content").empty();
+				$("#content").append(data);
+			},
+			error: function () {
+				$("#content").val("<h1>请重新加载</h1>>");
+			}
+		})
+	}
+
+	function getResult(id) {
+		debugger;
+		$("#temp").attr("href", "./getResult?meetingId="+id);
+		document.getElementById("temp").click();
+	}
+</script>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"> 
+	<title>电子投票系统</title>
+</head>
+<body>
+<div class="container">
+	<div class="row ">
+		<div class="col-sm-12">
+			<!-- 上部导航条 -->
+			<ul class="nav nav-tabs">
+			  <li class="nav-item active">
+			    <a class="nav-link" data-toggle="tab" href="#conferenceRegistration" aria-expanded="true">会议注册</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link " data-toggle="tab" href="#participant">参会人员</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link " data-toggle="tab" href="#meetingProcess">会议流程</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link " data-toggle="tab" href="#caseReport">情况汇报</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link " data-toggle="tab" href="#votingMethod">投票办法</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link " data-toggle="tab" href="#votingBallot">表决票</a>
+			  </li>
+
+			  <li class="nav-item">
+			    <a class="nav-link " data-toggle="tab" href="#meetionInfomation">会议资料</a>
+			  </li>
+			  
+			</ul>
+			
+			<!-- 下部内容区域 -->
+			<div id="myTabContent" class="tab-content"  style="margin-bottom: 50px;margin-top: 50px;">
+				
+			  <div class="tab-pane fade active in" id="conferenceRegistration">
+				<div class="form-group">
+                    <label for="meetingCode">会议编号</label>
+                    <input type="number" class="form-control" id="meetingCode" placeholder="Meeting Code">
+				</div>
+				<div class="form-group">
+				    <label for="meetingName">会议名称</label>
+				    <input type="text" class="form-control" id="meetingName" placeholder="Meeting Name">
+				</div>
+				<div class="form-group">
+				    <label for="meetingTime">会议时间</label>
+				    <input type="date" class="form-control" id="meetingTime" placeholder="Meeting Time">
+				</div>
+				<div class="form-group">
+				    <label for="meetingAddress">会议地点</label>
+				    <input type="text" class="form-control" id="meetingAddress" placeholder="Meeting Address">
+				</div>
+				<div class="form-group">
+				    <label for="meetingOrganizer">组织单位</label>
+				    <input type="text" class="form-control" id="meetingOrganizer" placeholder="Meeting Organizer">
+				</div>
+				<div class="form-group"><button type="button" class="btn btn-primary" onclick="conferenceRegistration()" id="btn1">保存</button></div>
+				
+			  </div>
+			  <div class="tab-pane fade " id="participant">
+			    <p>参会人员</p>
+				<table class="table table-hover">
+				  <thead>
+				    <tr>
+				      <th scope="col">人员编号</th>
+				      <th scope="col">姓名</th>
+				      <th scope="col">所在单位</th>
+				      <th scope="col">邮箱</th>
+					  <th scope="col">参会身份</th>
+				    </tr>
+				  </thead>
+				  <tbody id="humanForm">
+
+				  </tbody>
+				</table>
+				<div style="float: right;">
+					<button type="button" class="btn btn-primary btn-lg" onclick="addHumanBtn()" id="humanAdd">增加</button>
+					<button type="button" class="btn btn-info btn-lg" onclick="adddHumanConfirmBtn()" id="humanConfir">确认</button>
+				</div>
+			  </div>
+			  
+			  <div class="tab-pane fade " id="meetingProcess">
+				<div class="form-group">
+					<label for="meetingFlow">会议流程</label>
+					<textarea class="form-control" id="meetingFlow" rows="10"></textarea>
+				</div>
+				  <div class="form-group">
+					  <button type="button" class="btn btn-primary" onclick="meetingProcess()" id="btn3">保存</button>
+				  </div>
+			  </div>
+
+			  <div class="tab-pane fade" id="caseReport">
+				<form method="post" enctype="multipart/form-data" id="situationPost">
+			    <p>情况汇报</p>
+				<fieldset>
+					<div class="controls">
+						<input class="input-file" id="fileInputs" name="file" multiple type="file" style="padding: 4px; border: 1px solid rgb(204, 204, 204); font-size: 13px;">
+					</div>
+				</fieldset>
+				 </form>
+				  <button type="button" onclick="updateFiles()" class="btn btn-primary btn-lg">上传文件</button>
+			  </div>
+
+			  <div class="tab-pane fade" id="votingMethod">
+			    <p>投票办法</p>
+				  <table class="table table-bordered table-hover">
+					<tbody>
+					<tr>
+						<th>目标投票数</th>
+						<td><input type="number" id="targetNum" class="form-control" /></td>
+					</tr>
+					</tbody>
+				  </table>
+				  <button type="button" class="btn btn-primary" onclick="voteWaySave()" id="voteWaysaveBtn">暂存</button>
+			  </div>
+			  
+			  <div class="tab-pane fade  " id="votingBallot">
+			    <p>表决票</p>
+				<table class="table table-hover">
+				  <thead>
+				    <tr>
+				      <th scope="col">选项名</th>
+				      <th scope="col">介绍</th>
+					  <!--<th scope="col">操作</th>-->
+				    </tr>
+				  </thead>
+				  <tbody id="selectorForm">
+
+				  </tbody>
+				</table>
+				<div style="float: right;">
+					<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#selectModal" id="selectorAdd">增加</button>
+					<button type="button" class="btn btn-primary btn-lg" onclick="addSelectBtn()" id="selectorConfirm1">固定选项</button>
+				</div>
+			  </div>
+			  
+			  <div class="tab-pane fade " id="meetionInfomation">
+				<form method="post" enctype="multipart/form-data" id="meetingInfoPost">
+			    <p>会议资料</p>
+					<fieldset>
+						<div class="controls">
+							<input class="input-file" name="file" multiple type="file" style="padding: 4px; border: 1px solid rgb(204, 204, 204); font-size: 13px;">
+						</div>
+					</fieldset>
+				  <button type="button" onclick="updateFiles2()" class="btn btn-primary btn-lg">上传文件</button>
+				  </form>
+			  </div>
+			  
+			</div>
+			<button type="button" class="btn btn-primary btn-lg btn-block" onclick="getDoingPage()">完成创建</button>
+		</div>
+	</div>
+</div>
+
+<!--参会人员-->
+<!-- 按钮触发模态框 -->
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="humanInfo" style="display: none;"></button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">新人员添加</h4>
+			</div>
+			<div class="modal-body">
+				<label>人员编号</label>
+				<input class="form-control" type="text" id="newCode" />
+				<label>姓名</label>
+				<input class="form-control" type="text" id="newName" />
+				<label>所在单位</label>
+				<input class="form-control" type="text" id="newOrganizer" />
+				<label>电子邮箱</label>
+				<input class="form-control" type="text" id="newEmail" />
+				<label>身份证号码</label>
+				<input class="form-control" type="text" id="newIdentityCode" />
+				<label>备注</label>
+				<input class="form-control" type="text" id="newBeizhu" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="addHumanInfoBtn()" data-dismiss="modal">提交</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+<!--选项添加-->
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">新选项添加</h4>
+			</div>
+			<div class="modal-body">
+				<label>选项名</label>
+				<input class="form-control" type="text" id="newSelectName" />
+				<label>选项详情</label>
+				<input class="form-control" type="text" id="newSelectInfo" />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary" onclick="addSelectInfoBtn()" data-dismiss="modal">添加</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+</body>
+<script>
+
+	//投票办法暂存
+	function voteWaySave() {
+		let data = {"flag":"6","content":$("#targetNum").val()+"_"+$("input[name='targetTime']:checked").val()+"_"+$("#perNum").val()+"_0"};
+		$.ajax({
+			type: 'POST',
+			url: './upMeetingInfo',
+			data: data,
+			success: function (data) {
+				let json = JSON.parse(data);
+				if (json.result > "0"){
+					alert("已暂存");
+					$("#targetNum").attr("readonly", "readonly");
+					$("input[name='targetTime']").attr("readonly", "readonly");
+					$("#perNum").attr("readonly", "readonly");
+					$("#voteWaysaveBtn").attr("disabled", "disabled");
+				}else{
+					alert("保存失败");
+				}
+			},
+			error: function (data) {
+				alert("网络连接错误");
+			}
+		});
+	}
+	//单选框触发
+	function radioFun(a) {
+		if(a == 0){
+			$("#showPerNum").hide();
+		}else{
+			$("#showPerNum").show();
+		}
+	}
+	//情况汇报文件上传
+	function updateFiles() {
+		var formData = new FormData($("#situationPost")[0]);
+		var data = {"flag":"5"};
+		$.ajax({
+			type: 'POST',
+			url: './upMeetingInfo',
+			data: data,
+			success: function (data) {
+				$.ajax({
+					type: 'POST',
+					url: './upMeetingInfo',
+					data: formData,
+					cache: false,
+					processData: false,
+					contentType: false,
+					success: function (data) {
+						var json = JSON.parse(data);
+						if (json.result == 1){
+							alert(json.msg);
+						}else{
+							alert(json.msg);
+						}
+					},
+					error: function () {
+						alert("上传失败！");
+					}
+				})
+			},
+			error: function () {
+				alert("请重新上传！");
+			}
+		});
+	}
+
+	//会议资料文件上传
+	function updateFiles2() {
+		var formData = new FormData($("#meetingInfoPost")[0]);
+		var data = {"flag":"8"};
+		$.ajax({
+			type: 'POST',
+			url: './upMeetingInfo',
+			data: data,
+			success: function (data) {
+				$.ajax({
+					type: 'POST',
+					url: './upMeetingInfo',
+					data: formData,
+					cache: false,
+					processData: false,
+					contentType: false,
+					success: function (data) {
+						var json = JSON.parse(data);
+						if (json.result == 1){
+							alert(json.msg);
+						}else{
+							alert(json.msg);
+						}
+					},
+					error: function () {
+						alert("上传失败！");
+					}
+				});
+			},
+			error: function () {
+				alert("请重新上传！");
+			}
+		});
+	}
+
+	//会议注册
+	function conferenceRegistration() {
+		//空值验证
+		if ($("#meetingCode").val() == "" || $("#meetingName").val() == "" || $("#meetingTime").val() == ""
+				|| $("#meetingAddress").val() == "" || $("#meetingOrganizer").val() == ""){
+			alert("不能为空！！！");
+
+			return;
+		}
+
+		var data = {"code": $("#meetingCode").val(), "name": $("#meetingName").val(), "time": $("#meetingTime").val(),
+					"address": $("#meetingAddress").val(), "organizer": $("#meetingOrganizer").val(), "flag": "0" };
+
+		$.ajax({
+			type: 'POST',
+			url: './upMeetingInfo',
+			data: data,
+			cache: false,
+			success: function (data) {
+				var json = JSON.parse(data);
+				if (json.result > 0){
+					alert("提交成功");
+					$("#meetingCode").attr("readonly", "readonly");
+					$("#meetingName").attr("readonly", "readonly");
+					$("#meetingTime").attr("readonly", "readonly");
+					$("#meetingAddress").attr("readonly", "readonly");
+					$("#meetingOrganizer").attr("readonly", "readonly");
+					$("#btn1").attr("disabled", "disabled");
+				}else{
+					alert("提交失败，请重新提交");
+				}
+			},
+			error: function () {
+				alert("网络连接错误");
+			}
+		});
+
+	}
+
+	//会议流程
+	function meetingProcess() {
+		//空值验证
+		if($("#meetingFlow").val() == ""){
+			alert("不能为空！！！");
+			return;
+		}
+		var data = {"content": $("#meetingFlow").val(), "flag": "4"};
+		$.ajax({
+			type: 'POST',
+			url: './upMeetingInfo',
+			data: data,
+			cache: false,
+			success: function (data) {
+				var json = JSON.parse(data);
+				if (json.result > 0) {
+					alert("提交成功");
+					$("#meetingFlow").attr("readonly", "readonly");
+					$("#btn3").attr("disabled", "disabled");
+				}else{
+					alert("提交失败，请重新提交");
+				}
+			},
+			error: function () {
+				alert("网络连接错误");
+			}
+		});
+
+	}
+
+
+	var humanSelect=1;
+	//参会人员添加按钮
+	function addHumanBtn(){
+		var res = prompt("请输入人员编号","");
+		var data ={'flag': '1', 'code': res};
+		if (res){
+			$.ajax({
+				type: 'POST',
+				url: './upMeetingInfo',
+				data: data,
+				success: function (data) {
+					var json = JSON.parse(data);
+					if(json.result == '1'){
+						alert("编号对应人员存在，加入列表");
+
+						var temp = "<tr class='table-active'><th scope='row' id='code"+(humanSelect)+"'>"+json.code+"</th>"+
+								"<td>"+json.name+"</td><td>"+json.address+"</td>" +
+								"<td>"+json.email+"</td><td>" +
+								"<select class='form-control' id='joinIdentity"+(humanSelect++)+"'>" +
+								"<option value='1'>参与人员</option><option value='2'>监督人员</option>" +
+								"<option value='3'>列席人员</option></select></td></tr>";
+						$("#humanForm").append(temp);
+					}else{
+						alert("编号对应人员不存在，请添加");
+						debugger
+						$("#humanInfo").click();
+					}
+				},
+				error: function () {
+					alert("网络连接错误");
+				}
+			});
+		}
+	}
+	function addHumanInfoBtn() {
+		var data ={'flag':'2', 'code': $("#newCode").val(),'name': $("#newName").val(), 'address': $("#newOrganizer").val(),
+					'email': $("#newEmail").val(), 'identityCode': $("#newIdentityCode").val(), 'beizhu': $("#newBeizhu").val()}
+
+		$.ajax({
+			type: 'POST',
+			url: './upMeetingInfo',
+			data: data,
+			success: function (data) {
+				var json = JSON.parse(data);
+				if (json.result == 1){
+					alert("添加成功");
+					var temp = "<tr class='table-active'><th scope='row' id='code"+(humanSelect)+"'>"+$("#newCode").val()+"</th>"+
+							"<td>"+$("#newName").val()+"</td><td>"+$("#newOrganizer").val()+"</td>" +
+							"<td>"+$("#newEmail").val()+"</td><td>" +
+							"<select class='form-control' id='joinIdentity"+(humanSelect++)+"'>" +
+							"<option value='1'>参与人员</option><option value='2'>监督人员</option>" +
+							"<option value='3'>列席人员</option></select></td></tr>";
+					$("#humanForm").append(temp);
+
+					$("#newCode").val('');
+					$("#newName").val('');
+					$("#newOrganizer").val('');
+					$("#newEmail").val('');
+					$("#newIdentityCode").val('');
+					$("#newBeizhu").val('');
+				}else{
+					alert("添加失败");
+				}
+			},
+			error: function () {
+				alert("网络连接错误");
+			}
+		});
+	}
+	function adddHumanConfirmBtn() {
+		var confir = confirm("参会人员是否固定？");
+		var code;
+		var joinIdentity;
+
+		if (confir){
+			for (var i=1; i< humanSelect; i++){
+				code = "code"+i;
+				joinIdentity = "joinIdentity"+i;
+				var data={"flag":"3", "code":$("#"+code).html(), joinIdentity: $("#"+joinIdentity).val()};
+				$.ajax({
+					type: 'POST',
+					url: './upMeetingInfo',
+					data: data,
+					async: false,
+					success: function (data) {
+						var json = JSON.parse(data);
+						confir = "false";
+						$("#humanAdd").attr("disabled", "disabled");
+						$("#humanConfir").attr("disabled", "disabled");
+
+					},
+					error: function () {
+						alert("网络连接错误");
+					}
+				})
+			}
+		}
+	}
+	//添加选项信息到前端
+	var selectNum=1;
+	function addSelectInfoBtn() {
+		if($("#newSelectName").val() == "" && $("#newSelectInfo").val() == ""){
+			alert("选项不能为空");
+			return;
+		}
+		let temp= "<tr class='table-active'><th id='selectName"+selectNum+"'>"+$("#newSelectName").val()+"</th>";
+		temp = temp+"<td id='selectInfo"+(selectNum++)+"'>"+$("#newSelectInfo").val()+"</td></tr>";
+		$("#selectorForm").append(temp);
+
+		$("#newSelectName").val("");
+		$("#newSelectInfo").val("");
+
+	}
+	//选项信息入库
+	function addSelectBtn() {
+		var confir = confirm("是否固定表决票内容及数量？");
+		if (!confir){
+			return;
+		}
+		confir = false;
+
+		for (var i=1; i<selectNum; i++){
+			var data = {"flag":"7", "name":$("#selectName"+i).html(), "info":$("#selectInfo"+i).html()};
+			$.ajax({
+				type: 'POST',
+				url: './upMeetingInfo',
+				data: data,
+				async: false,
+				success: function (data) {
+					var json = JSON.parse(data);
+					confir = "true";
+					$("#selectorAdd").attr("disabled", "disabled");
+					$("#selectorConfirm1").attr("disabled", "disabled");
+				},
+				error: function () {
+					alert("网络连接错误");
+				}
+			});
+		}
+		if (confir == "true"){
+			alert("选项已固定");
+		}
+	}
+
+</script>
+</html>

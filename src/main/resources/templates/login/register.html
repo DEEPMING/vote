@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"> 
+	<title>电子投票系统</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body   style="background: #B0E0E6;margin-top: 100px;">
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-4 column">
+		</div>
+		<div class="col-md-4 column">
+			<form class="form-horizontal" role="form">
+				<div class="form-group">
+					<label class="col-form-label" for="email">登陆邮箱</label>
+					<input type="text" class="form-control" placeholder="Login Email" id="email" name="email">
+				</div>
+				<div class="form-group">
+					<label class="col-form-label" for="userPassword">登陆密码</label>
+					<input type="text" class="form-control" placeholder="New Password" id="userPassword" name="userPassword">
+				</div>
+				<div class="form-group">
+					<label class="col-form-label" for="reNewPassword">重复密码</label>
+					<input type="text" class="form-control" placeholder="ReNew Password" id="reNewPassword">
+				</div>
+				<div class="form-group">
+					<label class="col-form-label" for="organName">组织名称</label>
+					<input type="text" class="form-control" placeholder="Organ Name" id="organName">
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-3 col-sm-3">
+						 <button type="button" onclick="upRegisteInfo()" class="btn btn-default">Registe</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-4 column">
+		</div>
+	</div>
+</div>
+</body>
+<script>
+	function upRegisteInfo() {
+		if($("#userPassword").val() !== $("#reNewPassword").val()){
+			alert("两次密码不相同");
+			$("#userPassword").val("");
+			$("#reNewPassword").val("");
+			return;
+		}
+		var data = {"email":$("#email").val(),"userPassword":$("#userPassword").val(),"organName":$("#organName").val()}
+		$.ajax({
+			type: 'POST',
+			url: "./registeInfo",
+			data: data,
+			success: function (d) {
+				var json = JSON.parse(d);
+				if(json.result < 1){
+					alert(json.msg);
+					return;
+				}
+				if(json.result == "1"){
+					alert(json.msg);
+					window.location.href = "./index";
+				}
+			},
+			error: function () {
+				alert("网络连接失败");
+			}
+		})
+	}
+</script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"> 
+	<title>电子投票系统</title>
+</head>
+<body>
+<div class="container" style="margin-top: 50px;">
+	<div class="row clearfix">
+		<div class="col-md-3 column">
+		</div>
+		<div class="col-md-6 column">
+			<div class="form-group">
+				<label class="col-form-label" for="loginEmail">登陆邮箱</label>
+				<input type="text" class="form-control" placeholder="Login Email" id="loginEmail">
+			</div>
+			<div class="form-group">
+				<label class="col-form-label" for="oldPassword">旧登陆密码</label>
+				<input type="text" class="form-control" placeholder="Old Password" id="oldPassword">
+			</div>
+			<div class="form-group">
+				<label class="col-form-label" for="newPassword">新登陆密码</label>
+				<input type="text" class="form-control" placeholder="New Password" id="newPassword">
+			</div>
+			<div class="form-group">
+				<label class="col-form-label" for="reNewPassword">重复新密码</label>
+				<input type="text" class="form-control" placeholder="ReNew Password" id="reNewPassword">
+			</div>
+			<div class="form-group">
+				<label class="col-form-label" for="organName">组织名称</label>
+				<input type="text" class="form-control" placeholder="Organ Name" id="organName">
+			</div>
+			
+			<div style="text-align: center;">
+				<button type="button" class="btn btn-primary btn-lg" onclick="formSubmit()">保存</button>
+			</div>
+			
+		</div>
+		<div class="col-md-3 column">
+		</div>
+	</div>
+</div>
+</body>
+<script>
+	function formSubmit(){
+		var data = {"email": $("#loginEmail").val(),
+					"oldPassword": $("#oldPassword").val(),
+					"newPassword": $("#newPassword").val(),
+					"organName": $("#organName").val()};
+		$.ajax({
+			type: 'POST',
+			url: "./settingInfo",
+			data: data,
+			success: function (d) {
+				var json = JSON.parse(d);
+				alert(json.msg);
+				return;
+			},
+			error: function () {
+				alert("登陆信息发送失败！");
+			}
+		})
+	}
+
+</script>
+</html>

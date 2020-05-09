@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>电子投票系统</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="background: #B0E0E6;margin-top: 100px;">
+<div class="container">
+	<div class="row ">
+		<div class="col-sm-12">
+			<!-- 上部已授权 -->
+			<h3>已授权列表</h3>
+			<table class="table table-hover table-bordered">
+				<thead>
+				<th>组织名称</th>
+				<th>邮箱</th>
+				<th>授权状态</th>
+				</thead>
+				<tbody th:each="person : ${personnels}">
+					<tr>
+						<td th:text="${person.name}"></td>
+						<td th:text="${person.email}"></td>
+						<td th:text="已授权"></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- 下部未授权 -->
+			<h3>未授权列表</h3>
+			<table class="table table-hover table-bordered">
+				<thead>
+				<th>组织名称</th>
+				<th>邮箱</th>
+				<th>授权状态</th>
+				<th>操作</th>
+				</thead>
+				<tbody th:each="person : ${personnels2}">
+				<tr>
+					<td th:text="${person.name}"></td>
+					<td th:text="${person.email}"></td>
+					<td th:text="未授权"></td>
+					<td><button onclick="authOrganizer(id)" th:id="${person.email}">进行授权</button></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+	<!--	安全退出-->
+	function authOrganizer() {
+		$.ajax({
+			type: 'POST',
+			url: './safeOut',
+			success: function (data) {
+				var json = JSON.parse(data);
+				if(json.result == "1"){
+					window.location.href=json.msg;
+				}else{
+					alert(json.msg);
+					return;
+				}
+			}
+		});
+	}
+
+	//确认参与人员的选择
+	function authOrganizer(id) {
+		var data = {"id": id};
+		$.ajax({
+			type: 'POST',
+			url: './authOrganizer',
+			data: data,
+			success: function (d) {
+				window.location.reload();
+			}
+		});
+	}
+
+</script>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"> 
+	<title>电子投票系统</title>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">  
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body style="background: #B0E0E6;margin-top: 100px;">
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+		</div>
+	</div>
+	<div class="row clearfix">
+		<div class="col-md-3 column">
+			<ul class="nav nav-list well">
+							<li class="nav-header">
+								会议
+							</li>
+							<li>
+								<a class="active" href="#" onclick="getCreatePage()">组织</a>
+							</li>
+							<li>
+								<a href="#" onclick="getDoingPage()">进行中</a>
+							</li>
+							<li>
+								<a href="#" onclick="getFinishedPage()">已完结</a>
+							</li>
+							<li class="nav-header">
+								系统
+							</li>
+							<li>
+								<a href="#" onclick="getSettingPage()">设置</a>
+							</li>
+							<li>
+								<a href="#" onclick="safeOut()">安全退出</a>
+							</li>
+							<li class="divider">
+							</li>
+<!--							<li>-->
+<!--								<a href="#">帮助</a>-->
+<!--							</li>-->
+						</ul>
+		</div>
+		<div class="col-md-9 column" id="content">
+			<div class="jumbotron">
+			  <h3 class="display-3">已进入电子投票系统</h3>
+			  <p class="lead">创建新会议投票,请点击组织按钮;<br/>查看正在进行的会议,请点击进行中按钮;<br/>查看已经完成投票的情况,请点击已完结按钮.</p>
+			  <hr class="my-4">
+			  <p>若要修改登陆邮箱或密码等信息,请点击设置按钮;<br/>若要退出请点击安全退出按钮.</p>
+<!--			  <p class="lead">-->
+<!--			    <a class="btn btn-primary btn-lg" href="#" role="button"></a>-->
+<!--			  </p>-->
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+<script>
+	function getCreatePage() {
+		$.ajax({
+			type: 'POST',
+			url: "./create",
+			success: function (d) {
+				$("#content").empty();
+				$("#content").append(d);
+			},
+			error: function () {
+				$("#content").val("<h1>请重新加载</h1>>");
+			}
+		})
+	}
+
+	function getDoingPage() {
+		$.ajax({
+			type: 'POST',
+			url: "./doing",
+			success: function (d) {
+				$("#content").empty();
+				$("#content").append(d);
+			},
+			error: function () {
+				$("#content").val("<h1>请重新加载</h1>>");
+			}
+		})
+	}
+
+	function getFinishedPage() {
+		$.ajax({
+			type: 'POST',
+			url: "./finished",
+			success: function (d) {
+				$("#content").empty();
+				$("#content").append(d);
+			},
+			error: function () {
+				$("#content").val("<h1>请重新加载</h1>>");
+			}
+		})
+	}
+
+	function getSettingPage() {
+		$.ajax({
+			type: 'POST',
+			url: "./setting",
+			success: function (d) {
+				$("#content").empty();
+				$("#content").append(d);
+			},
+			error: function () {
+				$("#content").val("<h1>请重新加载</h1>>");
+			}
+		})
+	}
+
+	function safeOut() {
+		$.ajax({
+			type: 'POST',
+			url: './safeOut',
+			success: function (data) {
+				var json = JSON.parse(data);
+				if(json.result == "1"){
+					window.location.href=json.msg;
+				}else{
+					alert(json.msg);
+					return;
+				}
+			}
+		})
+	}
+
+</script>
+</html>
